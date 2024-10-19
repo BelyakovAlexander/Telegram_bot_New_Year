@@ -19,6 +19,6 @@ bot = Bot(token=config.BOT_TOKEN,
 # connect created router to main dispatcher
 dp.include_router(user_router)
 
-# this router has to be the last one!
+# this router has to be connected last!
 dp.include_router(common_router)
 
