@@ -24,9 +24,11 @@ movie_search_kbd = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text='By budget'),
-            KeyboardButton(text='Request history'),
+            KeyboardButton(text='My requests history'),
         ],
         [KeyboardButton(text='Set results limit')
+         ],
+        [KeyboardButton(text='Cancel')
          ]
     ],
     resize_keyboard=True,

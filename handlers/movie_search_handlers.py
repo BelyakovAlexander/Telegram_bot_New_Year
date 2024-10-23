@@ -63,13 +63,11 @@ async def send_movies_info_callback(callback: CallbackQuery, data: dict):  # NEE
 async def set_search_params(message: Message, state: FSMContext) -> None:
     """Changing user's state in accordance with options he selected"""
     if message.text.lower() == 'by name':
-        print('GO TO SEARCH BY NAME')                                            # TEST
         await message.answer('Enter movie\'s title: ')
         await state.set_state(MovieSearch.by_name)
 
     elif message.text.lower() == 'by rating':
         await message.answer('Sort by rating. High ratings first? Y/N ')
-        print('GO TO SEARCH BY RATING')                                         # TEST
         await state.set_state(MovieSearch.by_rating)
 
     elif message.text.lower() == 'by budget':
@@ -81,7 +79,7 @@ async def set_search_params(message: Message, state: FSMContext) -> None:
                              reply_markup=limit_choose_keyboard)
         await state.set_state(MovieSearch.set_limit)
 
-    elif message.text.lower() == 'request history':
+    elif message.text.lower() == 'my requests history':
         history = await get_history(message.from_user)                      # Getting user's history from database
         await message.answer('Here is your history: ',
                              reply_markup=await history_keyboard(history))
@@ -115,41 +113,47 @@ async def by_name_or_rating(message: Message, state: FSMContext) -> None:
 
     user_limit = await get_user_limit(message.from_user)                # take user's results length from database
 
-    params = {
-        "page": 1,
-        "limit": user_limit,
-        "query": message.text if await state.get_state() == MovieSearch.by_name else None,
+    if await state.get_state() == MovieSearch.by_name or message.text.lower() in ('y', 'n'):
 
-        "sortField": 'rating.imdb' if await state.get_state() == MovieSearch.by_rating
-                    else 'budget.value'if await state.get_state() == MovieSearch.by_budget else None,
+        params = {
+            "page": 1,
+            "limit": user_limit,
+            "query": message.text if await state.get_state() == MovieSearch.by_name else None,
 
-        "sortType": '-1' if await state.get_state() in (MovieSearch.by_rating, MovieSearch.by_budget) and message.text.lower() == 'y'
-                    else '1' if await state.get_state() in (MovieSearch.by_rating, MovieSearch.by_budget) and message.text.lower() == 'n'
-                    else None
-    }
-    headers = {
-        "accept": "application/json",
-        "X-API-KEY": f"{API_KEY}"
-    }
+            "sortField": 'rating.imdb' if await state.get_state() == MovieSearch.by_rating
+                        else 'budget.value'if await state.get_state() == MovieSearch.by_budget else None,
+
+            "sortType": '-1'
+            if await state.get_state() in (MovieSearch.by_rating, MovieSearch.by_budget) and message.text.lower() == 'y'
+                        else '1'
+            if await state.get_state() in (MovieSearch.by_rating, MovieSearch.by_budget) and message.text.lower() == 'n'
+                        else None
+        }
+        headers = {
+            "accept": "application/json",
+            "X-API-KEY": f"{API_KEY}"
+        }
 
 
-    response = requests.get(url, headers=headers, params=params)
-    data = response.json()
+        response = requests.get(url, headers=headers, params=params)
+        data = response.json()
 
-    if await state.get_state() == MovieSearch.by_name:                      # if user in 'by_name' state,save full query text in database
-        await save_request(user_tg_id=message.from_user.id,
-                           query_url=response.url,
-                           text=message.text
-                           )
-    # pprint(data)
-    if await state.get_state() == MovieSearch.by_budget:
-        pprint(data)
-        await send_movies_info(message, data, budget=True)
+        if await state.get_state() == MovieSearch.by_name:        # if user in 'by_name' state,save full query text in database
+            await save_request(user_tg_id=message.from_user.id,
+                               query_url=response.url,
+                               text=message.text
+                               )
+        # pprint(data)
+        if await state.get_state() == MovieSearch.by_budget:
+            pprint(data)
+            await send_movies_info(message, data, budget=True)
+        else:
+            await send_movies_info(message, data)                                   # send message with results in telegram-bot
+        await message.answer('Anything else?', reply_markup=movie_search_kbd)
+        await state.set_state(MovieSearch.sort_option)
+
     else:
-        await send_movies_info(message, data)                                   # send message with results in telegram-bot
-    await message.answer('Anything else?', reply_markup=movie_search_kbd)
-    await state.set_state(MovieSearch.sort_option)
-
+        await message.answer('I don\'t understand you. Please enter Y or N')
 
 # _________________________________________________________________________________________________________________
 
