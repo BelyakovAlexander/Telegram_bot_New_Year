@@ -1,13 +1,11 @@
-from typing import Callable
-
 import requests
 from pprint import pprint
 from aiogram import types, F
-from aiogram.filters import StateFilter, Command
+from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from keyboards import del_keyboard, movie_search_kbd, limit_choose_keyboard, limit_set_callbacks, history_keyboard
+from keyboards import movie_search_kbd, limit_choose_keyboard, limit_set_callbacks, history_keyboard
 from loader import user_router
 from states.user_states import MovieSearch
 from config_data.config import API_KEY

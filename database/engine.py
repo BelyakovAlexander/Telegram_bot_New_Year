@@ -1,5 +1,5 @@
 import os
-from sqlalchemy.ext.asyncio import AsyncSession, AsyncAttrs, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy import select, update, delete
 
 from .user_base import Base, User, RequestsHistory
