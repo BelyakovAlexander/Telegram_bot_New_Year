@@ -7,7 +7,7 @@ initial_kbd = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text='User info survey'),
-            KeyboardButton(text='Cancel')
+            KeyboardButton(text='Отмена')
         ]
     ],
     resize_keyboard=True,
@@ -28,7 +28,7 @@ movie_search_kbd = ReplyKeyboardMarkup(
         ],
         [KeyboardButton(text='Set results limit')
          ],
-        [KeyboardButton(text='Cancel')
+        [KeyboardButton(text='Отмена')
          ]
     ],
     resize_keyboard=True,

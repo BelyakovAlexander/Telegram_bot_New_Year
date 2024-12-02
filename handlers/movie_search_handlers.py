@@ -8,7 +8,6 @@ from aiogram.types import CallbackQuery, Message
 from keyboards import movie_search_kbd, limit_choose_keyboard, limit_set_callbacks, history_keyboard
 from loader import user_router
 from states.user_states import MovieSearch
-from config_data.config import API_KEY
 from database.engine import save_request, set_limit, get_user_limit, get_history
 
 
@@ -128,8 +127,7 @@ async def by_name_or_rating(message: Message, state: FSMContext) -> None:
                         else None
         }
         headers = {
-            "accept": "application/json",
-            "X-API-KEY": f"{API_KEY}"
+            "accept": "application/json"
         }
 
 
@@ -187,8 +185,7 @@ async def get_history_query(callback: CallbackQuery, state: FSMContext):
     query = history[num][2]
 
     headers = {
-        "accept": "application/json",
-        "X-API-KEY": f"{API_KEY}"
+        "accept": "application/json"
     }
 
     response = requests.get(url=query, headers=headers)

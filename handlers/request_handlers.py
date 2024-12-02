@@ -8,10 +8,10 @@ from states.user_states import RequestInfo
 
 
 # handler for canceling all states
-@user_router.message(StateFilter('*'), F.text.lower() == 'cancel')
-@user_router.message(Command('cancel'))
+@user_router.message(StateFilter('*'), F.text.lower() == 'отмена')
+@user_router.message(Command('отмена'))
 async def cancel_states(message: types.Message, state: FSMContext) -> None:
-    await message.answer('Cancel all. Return to start', reply_markup=initial_kbd)
+    await message.answer('Всё отменяем. Возвращаемся на старт!', reply_markup=initial_kbd)
     await state.clear()
 
 

@@ -8,7 +8,6 @@ else:
     load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-API_KEY = os.getenv("API_KEY")
 
 # Commands list issued after "/help" command (see user_handlers)
 DEFAULT_COMMANDS = (

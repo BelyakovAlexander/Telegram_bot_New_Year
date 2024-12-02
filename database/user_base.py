@@ -12,7 +12,6 @@ class Base(DeclarativeBase):
 class User(Base):
     __tablename__ = 'users'
 
-    # id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     telegram_id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     fullname: Mapped[str] = mapped_column(String(40), nullable=False)
     registration_date: Mapped[DateTime] = mapped_column(DateTime, server_default=func.now())
