@@ -31,17 +31,18 @@ async def bot_quiz(message: types.Message, state: FSMContext) -> None:
     await message.answer(f"Ну что ж, {message.from_user.full_name}.\n"
                          f"Давай сыграем в игру: ты будешь оценивать поступки детей, выбирая, "
                          f"что бы ты подарил(а) за каждый поступок - подарок или уголёк.\n"
-                         f"Готов? Если да, нажми 'подарок'! ",
+                         f"Готов? Если да, напиши что-нибудь! ",
                          reply_markup=coal_or_gift_kbd)
-    await state.update_data(user_count=0)
-    await state.update_data(question_num=0)
+    await state.update_data(user_rating=0)
+    await state.update_data(question_num=1)
     await state.set_state(QuizStates.behavior_quiz_state)
 
 
 @user_router.message(QuizStates.behavior_quiz_state, F.text)
 async def start_quiz(message: Message, state: FSMContext) -> None:
     """Запуск опроса о поведении детей"""
-    if message.text.lower() in ('подарок', 'уголёк'):
+    # if message.text.lower() in ('подарок', 'уголёк'):
+    if message:
         await state.update_data(question=random.choice(list(children_actions)))
         res = await state.get_data()
         await message.answer(f'{res["question"]}')
@@ -60,19 +61,31 @@ async def quiz_question(message: Message, state: FSMContext) -> None:
 
     if children_actions[res['question']] == 'уголёк':
         if usr_answer.lower() == 'подарок':
-            await state.update_data(user_count=res['user_count'] + 1)
-            await message.answer(f'Ты добряк, счёт {res["user_count"]}')
+            await state.update_data(user_rating=res['user_rating'] + 1)
+            await message.answer(f'Ты добряк')
+
     elif children_actions[res['question']] == 'подарок':
         if usr_answer.lower() == 'уголёк':
-            await state.update_data(user_count=res['user_count'] - 1)
-            await message.answer(f'Ты злодей, счёт {res["user_count"]}')
-    if res['question_num'] <= 4:
-        await message.answer('Следующий вопрос')
-        await state.set_state(QuizStates.behavior_quiz_state)
-    else:
-        await message.answer('Закончили упражнение')
-        await state.clear()                                 # for testing only
+            await state.update_data(user_rating=res['user_rating'] - 1)
+            await message.answer(f'Ты злодей')
+    await message.answer(f'Рейтинг: {res["user_rating"]}\tВопрос № {res["question_num"]}')
 
+    if res['question_num'] <= 4:
+        await message.answer('Следующий вопрос?')
+        await state.set_state(QuizStates.behavior_quiz_state)                   #TEST DELETED
+        # await quiz_question
+    else:
+        await message.answer('Закончили упражнение. Хочешь узнать результаты?')
+        await state.set_state(QuizStates.results_of_quiz)
+
+
+@user_router.message(QuizStates.results_of_quiz, F.text)
+async def results_of_quiz(message: Message, state: FSMContext) -> None:
+    res: dict = await state.get_data()
+    rating = res['user_rating']
+    await message.answer(f'{message.md_text.capitalize()}? Хорошо!\nРейтинг: {rating}')
+    kindness = 'вредный' if rating <= -2 else 'справедливый' if (-1 <= rating <= 1) else 'добрый'
+    await message.answer(f'Вы {kindness} Дед Мороз!')
 
 
 

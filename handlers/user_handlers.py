@@ -14,7 +14,9 @@ from loader import user_router
 async def bot_start(message: types.Message, state: FSMContext) -> None:
     await user_registration(message.from_user)
     await message.answer(f"<b>Здравствуй, {message.from_user.full_name}</b>!\n Ждёшь чудо на Новый год? Я хочу"
-                         f"поднять тебе настроение! Хочешь, погадаю? Напиши 'погадай'.",
+                         f" поднять тебе настроение! Хочешь, погадаю? Напиши 'погадай'.\n"
+                         f"Или потренируешься быть Дедом Морозом? Тогда напиши 'Оценить поступки'\n"
+                         f"Или просто выбери эти варианты из списка внизу!",
                          reply_markup=initial_kbd)
     await state.clear()
 
