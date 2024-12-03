@@ -3,36 +3,30 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 initial_kbd = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text='Movie search')
+            KeyboardButton(text='Оценить поступки')
         ],
         [
-            KeyboardButton(text='User info survey'),
+            KeyboardButton(text='Погадай'),
             KeyboardButton(text='Отмена')
         ]
     ],
     resize_keyboard=True,
-    input_field_placeholder='Choose any option',
+    input_field_placeholder='Выберите один из вариантов',
     one_time_keyboard=False
 )
 
-# keyboard for movie sorting
-movie_search_kbd = ReplyKeyboardMarkup(
+# клавиатура для ответов на вопросы об оценке поступка ребёнка
+coal_or_gift_kbd = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text='By name'),
-            KeyboardButton(text='By rating')
+            KeyboardButton(text='Подарок'),
+            KeyboardButton(text='Уголёк')
         ],
-        [
-            KeyboardButton(text='By budget'),
-            KeyboardButton(text='My requests history'),
-        ],
-        [KeyboardButton(text='Set results limit')
-         ],
         [KeyboardButton(text='Отмена')
          ]
     ],
     resize_keyboard=True,
-    input_field_placeholder='Choose selection option',
+    input_field_placeholder='Выбери, что ты подаришь ребёнку за это',
     one_time_keyboard=False
 )
 

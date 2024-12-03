@@ -9,7 +9,7 @@ from handlers import *
 
 async def main():
     """Create database"""
-    # await drop_db()                   # dropping - for TESTING purposes only
+    await drop_db()                   # dropping - for TESTING purposes only
     await create_db()
     await bot.delete_webhook(drop_pending_updates=True)
 

@@ -1,4 +1,5 @@
 from aiogram import types, F
+from aiogram.filters import StateFilter
 
 from config_data.config import DEFAULT_COMMANDS
 from aiogram.filters.command import Command, CommandStart
@@ -12,9 +13,18 @@ from loader import user_router
 @user_router.message(CommandStart())
 async def bot_start(message: types.Message, state: FSMContext) -> None:
     await user_registration(message.from_user)
-    await message.answer(f"Hello, {message.from_user.full_name}! I will help you to find a <b>good movie</b>!")
+    await message.answer(f"<b>Здравствуй, {message.from_user.full_name}</b>!\n Ждёшь чудо на Новый год? Я хочу"
+                         f"поднять тебе настроение! Хочешь, погадаю? Напиши 'погадай'.",
+                         reply_markup=initial_kbd)
     await state.clear()
 
+
+# handler для отмены всех статусов и возвращения к началу разговора
+@user_router.message(StateFilter('*'), F.text.lower() == 'отмена')
+@user_router.message(Command('отмена', 'cancel'))
+async def cancel_states(message: types.Message, state: FSMContext) -> None:
+    await message.answer('Всё отменяем. Возвращаемся на старт!', reply_markup=initial_kbd)
+    await state.clear()
 
 @user_router.message(F.text.lower() == 'help')
 @user_router.message(Command('help'))
@@ -26,14 +36,14 @@ async def bot_help(message: types.Message, state: FSMContext) -> None:
     await state.clear()
 
 
-@user_router.message(F.text.lower() == 'menu')
-@user_router.message(Command('menu'))
-async def bot_help(message: types.Message, state: FSMContext) -> None:
-    """Handler that activates when user's message contains 'menu' OR after command '/menu'"""
-
-    await user_registration(message.from_user)                      # Just in case, check if user has registered
-    await message.answer('Please choose any option:',
-                         reply_markup=initial_kbd)
-    await state.clear()
+# @user_router.message(F.text.lower() == 'menu')
+# @user_router.message(Command('menu'))
+# async def bot_help(message: types.Message, state: FSMContext) -> None:
+#     """Handler that activates when user's message contains 'menu' OR after command '/menu'"""
+#
+#     await user_registration(message.from_user)                      # Just in case, check if user has registered
+#     await message.answer('Please choose any option:',
+#                          reply_markup=initial_kbd)
+#     await state.clear()
 
 

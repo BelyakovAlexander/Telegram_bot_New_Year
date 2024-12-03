@@ -11,15 +11,15 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 # Commands list issued after "/help" command (see user_handlers)
 DEFAULT_COMMANDS = (
-    ("start", "Bot launch (actually, it doing nothing after that...)"),
-    ("help", "Show commands... Again."),
+    ("start", "Начать общение!"),
+    ("help", "Показать доступные команды"),
     ("menu", "Show menu"),
-    ('cancel', 'Cancel any progress in search or survey')
+    ('cancel', 'Давай вернёмся к началу разговора')
 )
-# Список стандартных команд для бота, доступных по кнопке внизу
+# Список стандартных команд для бота, доступных по кнопке внизу. ***Названия - только латиницей!***
 private_commands = [
-    BotCommand(command='start', description="Let's START!"),
-    BotCommand(command='help', description="Show all commands"),
+    BotCommand(command='start', description="Начать наше общение!"),
+    BotCommand(command='help', description="Какие команды знает бот?"),
     BotCommand(command='menu', description="Show menu with BUTTONS"),
-    BotCommand(command='cancel', description='Cancel progress during search or survey')
+    BotCommand(command='cancel', description='Давай вернёмся к началу разговора')
 ]
