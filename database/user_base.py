@@ -17,7 +17,7 @@ class User(Base):
     registration_date: Mapped[DateTime] = mapped_column(DateTime, server_default=func.now())
     # attribute with default value
     last_visit: Mapped[DateTime] = mapped_column(DateTime, server_default=func.now(), onupdate=datetime.datetime.utcnow())
-    # results_limit: Mapped[int] = mapped_column(default=10)
+    message_to_future: Mapped[str] = mapped_column(String(200), nullable=True)
 
 
 # class RequestsHistory(Base):

@@ -58,24 +58,24 @@ async def user_registration(from_user) -> None:
 #         await session.commit()
 
 
-async def set_limit(from_user, new_limit) -> None:
-    """Function for changing of 'results_limit' column in 'users' table in DB for current user"""
+async def set_future_message(from_user, new_message) -> None:
+    """Function for changing of 'future_message' column in 'users' table in DB for current user"""
     async with session_maker() as session:
         stmnt = update(User).\
                 where(User.telegram_id == from_user.id).\
-                values(results_limit = new_limit)
+                values(message_to_future = new_message)
         await session.execute(stmnt)
         await session.commit()
 
 
-async def get_user_limit(from_user) -> int:
+async def get_future_message(from_user) -> int:
     """Function that returns user's 'results_limit' column data"""
     async with session_maker() as session:
         stmnt = select(User).\
                 where(User.telegram_id == from_user.id)
         result = await session.execute(stmnt)
         user = result.scalars().one()
-        return user.results_limit
+        return user.message_to_future
 
 
 # async def get_history(from_user):

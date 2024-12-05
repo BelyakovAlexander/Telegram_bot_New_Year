@@ -14,8 +14,11 @@ class QuizStates(StatesGroup):
     quiz_question = State()
     results_of_quiz = State()
 
-    set_limit = State()
-    by_name = State()
-    by_rating = State()
-    by_budget = State()
-    history_state = State()
+    future_message_answer = State()
+    setting_future_message = State()
+
+
+    # by_name = State()
+    # by_rating = State()
+    # by_budget = State()
+    # history_state = State()

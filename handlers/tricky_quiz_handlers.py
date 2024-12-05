@@ -1,7 +1,6 @@
 import random
 
 import requests
-from pprint import pprint
 from aiogram import types, F
 from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
@@ -10,20 +9,6 @@ from aiogram.types import CallbackQuery, Message
 from keyboards import coal_or_gift_keyboard_inline, yes_or_cancel_inline, initial_keyboard_inline
 from loader import user_router
 from states.user_states import QuizStates
-from database.engine import set_limit, get_user_limit
-
-                                                                                                                                #TODO
-# children_actions = {'Художественное творчество на стенах: Рисунки на обоях, стенах или мебели фломастерами': 'уголёк',
-#                 'Исследование пространства: Полное исследование чужого дома, заглядывание в шкафы и ящики': 'уголёк',
-#                 'Игры с игрушками: Использование чужих игрушек совершенно неожиданным способом или без спроса': 'уголёк',
-#                 'Разливание воды, купание игрушек в тазике или ведре, приводящее к образованию луж на полу': 'уголёк',
-#
-#                 'Забавные и неожиданные места для пряток, от которых родители приходят в восторг (иногда – в ужас)': 'подарок',
-#                 'Смешные рисунки: Рисует необычные и забавные картинки, которые могут быть не очень похожи на реальность, но полны детского очарования': 'подарок',
-#                 'Забавная мимика и жесты: Гримасы, смешные жесты и шутки': 'подарок',
-#                 'Неожиданные объятия домашнего питомца, ведущие к его возмущению или радости': 'подарок',
-#                 'Неловкие танцы: Самобытные и забавные танцы под любимую музыку': 'подарок'
-#                 }
 
 children_actions = {'Художественное творчество на стенах: Рисунки на обоях, стенах или мебели фломастерами': 'coal',
                 'Исследование пространства: Полное исследование чужого дома, заглядывание в шкафы и ящики': 'coal',
@@ -44,7 +29,7 @@ children_actions = {'Художественное творчество на ст
 
 
 # @user_router.message(StateFilter(None), F.text.lower() == 'оценить поступки')
-@user_router.callback_query(StateFilter(None), F.data)
+@user_router.callback_query(StateFilter(None), F.data == 'judge')
 async def bot_quiz(callback: types.CallbackQuery, state: FSMContext) -> None:
     """
     Хендлер для начала опроса по оценке поступков

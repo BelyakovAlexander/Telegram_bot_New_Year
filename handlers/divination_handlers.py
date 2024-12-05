@@ -36,7 +36,6 @@ divination_list = ('В новом году тебя ждет много радо
 
 
 # хендлер для начала гадания (inline)
-# @user_router.message(StateFilter(None), F.text.lower() == 'погадай')
 @user_router.callback_query(StateFilter(None), F.data == 'divine')
 async def bot_quiz_inline(callback: types.CallbackQuery, state: FSMContext) -> None:
     await callback.message.answer(f"Итак, {callback.from_user.full_name or 'дружок'}, проведём гадание!\nНапиши, пожалуйста, как тебе нравится, чтобы тебя называли? ",
@@ -46,11 +45,10 @@ async def bot_quiz_inline(callback: types.CallbackQuery, state: FSMContext) -> N
 
 # хендлер для начала гадания
 @user_router.message(StateFilter(None), F.text.lower() == 'погадай')
-async def bot_quiz_inline(message: types.Message, state: FSMContext) -> None:
+async def bot_quiz(message: types.Message, state: FSMContext) -> None:
     await message.answer(f"Итак, {message.from_user.full_name or 'дружок'}, проведём гадание!\nНапиши, пожалуйста, как тебе нравится, чтобы тебя называли? ",
                          reply_markup=del_keyboard)
     await state.set_state(RequestInfo.name)
-
 
 
 @user_router.message(RequestInfo.name, F.text)

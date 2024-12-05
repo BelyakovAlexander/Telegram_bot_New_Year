@@ -15,6 +15,7 @@ initial_keyboard_inline = InlineKeyboardMarkup(
     inline_keyboard=[
         [InlineKeyboardButton(text='Побывать Дедом Морозом', callback_data='judge')],
         [InlineKeyboardButton(text='Погадай', callback_data='divine')],
+        [InlineKeyboardButton(text='Послание в будущее', callback_data='future')],
         [InlineKeyboardButton(text='Отмена', callback_data='cancel')]
     ]
 )
