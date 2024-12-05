@@ -2,7 +2,7 @@ from aiogram import types, F
 from aiogram.filters import StateFilter, Command
 from aiogram.fsm.context import FSMContext
 
-from keyboards import del_keyboard, initial_kbd
+from keyboards import del_keyboard, initial_keyboard_inline
 from loader import user_router
 from states.user_states import RequestInfo
 import random
@@ -16,16 +16,41 @@ divination_list = ('В новом году тебя ждет много радо
                    'Тебя ожидает неожиданный подарок судьбы, который изменит твою жизнь к лучшему.',
                    'Год будет полон вдохновения и творческих успехов.',
                    'Твоё здоровье будет крепким, а настроение – прекрасным.',
-                   'Тебя ждет финансовое благополучие и стабильность.')
+                   'Тебя ждет финансовое благополучие и стабильность.',
+                   'Весь следующий год будет наполнен любовью и лаской.',
+                   'В новом году ты найдешь новое интересное занятие.',
+                   'В новом году не бойся поступать так, как считаешь нужным!',
+                   'В ближайшем будущем тебе предстоит в чем-то рискнуть. Удача на твоей стороне!',
+                   'В новом году ты познакомишься с человеком, который станет тебе другом на всю жизнь.',
+                   'В новом году тебя ждёт долгое путешествие, которые оправдает твои ожидания.',
+                   'В Новом году открывай любые двери целеустремлённо и уверено, удача рядом.',
+                   'В Новом году тебя ожидает счастливый поворот в судьбе.',
+                   'В Новом году тебе выпадет шанс добиться того, о чём ты давно размышляешь.',
+                   'Новый год будет наполнен приятными сюрпризами, не стоит их бояться. Наоборот, приготовься к тому, '
+                        'что может потребоваться полная перезагрузка в жизни, чтобы насладиться предстоящим счастьем.',
+                   'Новый год будет для тебя гармоничным. Удивительно, но наконец-то насоупит момент, когда во всех сферах'
+                        'будет баланс. Тебя устроит всё, что будет происходить на работе, на личном фронте и дома.'
+                        ' Окружающие заметят, как будут светиться по-новому твои глаза.',
+                   'В новом году забудь о своей застенчивости! Протяни руки к своей любви и страсти!',
+                   )
 
 
-# handler for starting survey
+# хендлер для начала гадания (inline)
+# @user_router.message(StateFilter(None), F.text.lower() == 'погадай')
+@user_router.callback_query(StateFilter(None), F.data == 'divine')
+async def bot_quiz_inline(callback: types.CallbackQuery, state: FSMContext) -> None:
+    await callback.message.answer(f"Итак, {callback.from_user.full_name or 'дружок'}, проведём гадание!\nНапиши, пожалуйста, как тебе нравится, чтобы тебя называли? ",
+                         reply_markup=del_keyboard)
+    await state.set_state(RequestInfo.name)
+
+
+# хендлер для начала гадания
 @user_router.message(StateFilter(None), F.text.lower() == 'погадай')
-@user_router.callback_query(F.data == 'divine')                              # TODO (с этим декоратором бот отвечает не сообщением, а всплывающим окном с тем же текстом)
-async def bot_quiz(message: types.Message, state: FSMContext) -> None:
+async def bot_quiz_inline(message: types.Message, state: FSMContext) -> None:
     await message.answer(f"Итак, {message.from_user.full_name or 'дружок'}, проведём гадание!\nНапиши, пожалуйста, как тебе нравится, чтобы тебя называли? ",
                          reply_markup=del_keyboard)
     await state.set_state(RequestInfo.name)
+
 
 
 @user_router.message(RequestInfo.name, F.text)
@@ -33,7 +58,7 @@ async def divination(message: types.Message, state: FSMContext) -> None:
     await state.update_data(name = message.text)
     res = await state.get_data()
     username = res['name']
-    await message.answer(username + '! ' + random.choice(divination_list), reply_markup=initial_kbd)
+    await message.answer(username + '! ' + random.choice(divination_list), reply_markup=initial_keyboard_inline)
     await state.clear()
 
 

@@ -13,13 +13,11 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 DEFAULT_COMMANDS = (
     ("start", "Начать общение!"),
     ("help", "Показать доступные команды"),
-    ("menu", "Show menu"),
     ('cancel', 'Давай вернёмся к началу разговора')
 )
 # Список стандартных команд для бота, доступных по кнопке внизу. ***Названия - только латиницей!***
 private_commands = [
     BotCommand(command='start', description="Начать наше общение!"),
     BotCommand(command='help', description="Какие команды знает бот?"),
-    BotCommand(command='menu', description="Show menu with BUTTONS"),
     BotCommand(command='cancel', description='Давай вернёмся к началу разговора')
 ]

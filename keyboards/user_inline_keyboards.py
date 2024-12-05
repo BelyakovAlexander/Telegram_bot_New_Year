@@ -1,19 +1,19 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-limit_set_callbacks = {'lim_2': 2, 'lim_5': 5, 'lim_10': 10, 'lim_20': 20, 'lim_40': 30}
+# limit_set_callbacks = {'lim_2': 2, 'lim_5': 5, 'lim_10': 10, 'lim_20': 20, 'lim_40': 30}
 
 # keyboard with automatically created buttons from dictionary 'limit_set_callbacks'
-limit_choose_keyboard = InlineKeyboardMarkup(
-    inline_keyboard=[
-        [InlineKeyboardButton(text=f'{limit_set_callbacks[i]} results', callback_data = i) for i in limit_set_callbacks
-            ]
-    ]
-)
+# limit_choose_keyboard = InlineKeyboardMarkup(
+#     inline_keyboard=[
+#         [InlineKeyboardButton(text=f'{limit_set_callbacks[i]} results', callback_data = i) for i in limit_set_callbacks
+#             ]
+#     ]
+# )
 
 initial_keyboard_inline = InlineKeyboardMarkup(
     inline_keyboard=[
-        [InlineKeyboardButton(text='Оценить поступки', callback_data='judge')],
+        [InlineKeyboardButton(text='Побывать Дедом Морозом', callback_data='judge')],
         [InlineKeyboardButton(text='Погадай', callback_data='divine')],
         [InlineKeyboardButton(text='Отмена', callback_data='cancel')]
     ]
@@ -28,9 +28,9 @@ coal_or_gift_keyboard_inline = InlineKeyboardMarkup(
     ]
 )
 
-next_question_or_quit_inline = InlineKeyboardMarkup(
+yes_or_cancel_inline = InlineKeyboardMarkup(
     inline_keyboard=[
-        [InlineKeyboardButton(text='Следующий вопрос', callback_data='more')],
+        [InlineKeyboardButton(text='Да', callback_data='more')],
         [InlineKeyboardButton(text='Отмена', callback_data='cancel')]
     ]
 )
