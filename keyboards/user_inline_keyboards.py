@@ -11,17 +11,40 @@ limit_choose_keyboard = InlineKeyboardMarkup(
     ]
 )
 
+initial_keyboard_inline = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text='Оценить поступки', callback_data='judge')],
+        [InlineKeyboardButton(text='Погадай', callback_data='divine')],
+        [InlineKeyboardButton(text='Отмена', callback_data='cancel')]
+    ]
+)
 
-async def history_keyboard(hist_list: list):
-    """Creating of inline keyboard with user's request history
-    Callbacks are like 'hist_0', 'hist_1', 'hist_2' e.t.c."""
-    keyboard = InlineKeyboardBuilder()
-    num = 0
-    for line in hist_list:
-        clb_data = f'hist_{num}'
-        keyboard.add(InlineKeyboardButton(
-            text=f'{line[0]}',
-            callback_data=clb_data)
-        )
-        num += 1
-    return keyboard.adjust(2).as_markup()
+
+coal_or_gift_keyboard_inline = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text='Подарок', callback_data='gift')],
+        [InlineKeyboardButton(text='Уголёк', callback_data='coal')],
+        [InlineKeyboardButton(text='Отмена', callback_data='cancel')]
+    ]
+)
+
+next_question_or_quit_inline = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text='Следующий вопрос', callback_data='more')],
+        [InlineKeyboardButton(text='Отмена', callback_data='cancel')]
+    ]
+)
+
+# async def history_keyboard(hist_list: list):
+#     """Creating of inline keyboard with user's request history
+#     Callbacks are like 'hist_0', 'hist_1', 'hist_2' e.t.c."""
+#     keyboard = InlineKeyboardBuilder()
+#     num = 0
+#     for line in hist_list:
+#         clb_data = f'hist_{num}'
+#         keyboard.add(InlineKeyboardButton(
+#             text=f'{line[0]}',
+#             callback_data=clb_data)
+#         )
+#         num += 1
+#     return keyboard.adjust(2).as_markup()

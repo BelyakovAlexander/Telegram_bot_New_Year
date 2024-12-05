@@ -17,16 +17,19 @@ async def bot_start(message: types.Message, state: FSMContext) -> None:
                          f" поднять тебе настроение! Хочешь, погадаю? Напиши 'погадай'.\n"
                          f"Или потренируешься быть Дедом Морозом? Тогда напиши 'Оценить поступки'\n"
                          f"Или просто выбери эти варианты из списка внизу!",
-                         reply_markup=initial_kbd)
+                         reply_markup=initial_keyboard_inline)
     await state.clear()
 
 
 # handler для отмены всех статусов и возвращения к началу разговора
 @user_router.message(StateFilter('*'), F.text.lower() == 'отмена')
 @user_router.message(Command('отмена', 'cancel'))
+@user_router.callback_query(F.data == 'cancel')                          # TODO (с этим декоратором бот отвечает не сообщением, а всплывающим окном с тем же текстом)
 async def cancel_states(message: types.Message, state: FSMContext) -> None:
     await message.answer('Всё отменяем. Возвращаемся на старт!', reply_markup=initial_kbd)
     await state.clear()
+
+
 
 @user_router.message(F.text.lower() == 'help')
 @user_router.message(Command('help'))
