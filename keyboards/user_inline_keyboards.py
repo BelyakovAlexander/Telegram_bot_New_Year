@@ -36,6 +36,16 @@ yes_or_cancel_inline = InlineKeyboardMarkup(
     ]
 )
 
+
+set_or_show_future_message = InlineKeyboardMarkup(
+    inline_keyboard =[
+        [InlineKeyboardButton(text='Написать сообщение в будущее', callback_data='set_future')],
+        [InlineKeyboardButton(text='Посмотреть своё сообщение в будущее', callback_data='show_future_message')],
+        [InlineKeyboardButton(text='Отмена', callback_data='cancel')]
+    ]
+)
+
+
 # async def history_keyboard(hist_list: list):
 #     """Creating of inline keyboard with user's request history
 #     Callbacks are like 'hist_0', 'hist_1', 'hist_2' e.t.c."""

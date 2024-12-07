@@ -15,10 +15,8 @@ class QuizStates(StatesGroup):
     results_of_quiz = State()
 
     future_message_answer = State()
+
+    go_to_setting_future_message = State()
     setting_future_message = State()
 
-
-    # by_name = State()
-    # by_rating = State()
-    # by_budget = State()
-    # history_state = State()
+    show_future_message = State()
