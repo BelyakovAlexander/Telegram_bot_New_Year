@@ -1,7 +1,7 @@
 import os
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy import select, update, delete
-
+from typing import Optional
 from .user_base import Base, User
 
 engine = create_async_engine(os.getenv('USERS_DB'), echo=True)
@@ -58,25 +58,27 @@ async def user_registration(from_user) -> None:
 #         await session.commit()
 
 
-async def set_limit(from_user, new_limit) -> None:
-    """Function for changing of 'results_limit' column in 'users' table in DB for current user"""
+async def set_future_message(from_user, new_message) -> None:
+    """Function for changing of 'future_message' column in 'users' table in DB for current user"""
     async with session_maker() as session:
         stmnt = update(User).\
                 where(User.telegram_id == from_user.id).\
-                values(results_limit = new_limit)
+                values(message_to_future = new_message)
         await session.execute(stmnt)
         await session.commit()
 
 
-async def get_user_limit(from_user) -> int:
-    """Function that returns user's 'results_limit' column data"""
+async def get_future_message(user_tg_id) -> Optional[str]:
+    """Function that returns user's 'message_to_future' column data"""
     async with session_maker() as session:
-        stmnt = select(User).\
-                where(User.telegram_id == from_user.id)
+        stmnt = select(User.message_to_future).\
+                where(User.telegram_id == user_tg_id)
         result = await session.execute(stmnt)
-        user = result.scalars().one()
-        return user.results_limit
-
+        future_message: Optional[str] = result.scalars().one()
+        if future_message:                                                          # TEST
+            return future_message
+        else:
+            return None
 
 # async def get_history(from_user):
 #     """Function that returns user's history"""
