@@ -71,12 +71,12 @@ async def set_future_message(from_user, new_message) -> None:
 async def get_future_message(user_tg_id) -> Optional[str]:
     """Function that returns user's 'message_to_future' column data"""
     async with session_maker() as session:
-        stmnt = select(User).\
+        stmnt = select(User.message_to_future).\
                 where(User.telegram_id == user_tg_id)
         result = await session.execute(stmnt)
-        if result.scalars().one():                                                          # TEST
-            user = result.scalars().one()
-            return user.message_to_future
+        future_message: Optional[str] = result.scalars().one()
+        if future_message:                                                          # TEST
+            return future_message
         else:
             return None
 
