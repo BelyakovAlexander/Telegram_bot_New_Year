@@ -15,7 +15,10 @@ children_actions = {'Художественное творчество на ст
                 'Игры с игрушками: Использование чужих игрушек совершенно неожиданным способом или без спроса': 'coal',
                 'Разливание воды, купание игрушек в тазике или ведре, приводящее к образованию луж на полу': 'coal',
                 'Рассказывание всем секретов, доверенных другом или подругой': 'coal',
-                'Разбирание чужих вещей в целях разобраться в их внутреннем устройстве': 'coal',
+                'Не убирает за собой, оставляя беспорядок в комнате или других помещениях': 'coal',
+                'Игнорирование просьб и указаний взрослых': 'coal',
+                'Намеренное причинение боли: Укусы, щипки, удары, толкание других детей': 'coal',
+                'Лживость: Сознательное искажение правды, придумывание историй': 'coal',
 
                 'Забавные и неожиданные места для пряток, от которых родители приходят в восторг (иногда – в ужас)': 'gift',
                 'Смешные рисунки: Рисует необычные и забавные картинки, которые могут быть не очень похожи на реальность, но полны детского очарования': 'gift',
@@ -24,7 +27,18 @@ children_actions = {'Художественное творчество на ст
                 'Неловкие танцы: Самобытные и забавные танцы под любимую музыку': 'gift',
                 'Неожиданные сюрпризы: Изготовить что-то своими руками, чтобы порадовать друзей или близких' : 'gift',
                 'Загадочные фокусы: Удивить окружающих потрясающим волшебным трюком': 'gift',
-                'Окунуться в фантазию: Рассматривать картинки в книге и представлять себя внутри сказки': 'gift'
+                'Окунуться в фантазию: Рассматривать картинки в книге и представлять себя внутри сказки': 'gift',
+                'Подслушивание разговоров и разглашение чужих секретов': 'gift',
+                'Поддержание порядка в своей комнате': 'gift',
+                'Проявление щедрости и желания поделиться с другими': 'gift',
+                'Добрые слова и комплименты: Выражение позитивных эмоций и поддержка других': 'gift',
+                'Помощь друзьям: Поддержка в трудную минуту, делиться игрушками, помощь в выполнении заданий': 'gift',
+                'Помощь по дому: Уборка игрушек, помощь в приготовлении пищи, полив цветов, вынос мусора': 'gift',
+                'Выполнение обещаний: Соблюдение данного слова и ответственность за свои действия': 'gift',
+                'Строительство шалашей из подушек и одеял': 'gift',
+                'Выполнение домашних заданий: Ответственное отношение к учебе': 'gift',
+                'Забота о младших: Помощь в одевании, кормлении, играх': 'gift'
+
                 }
 
 
@@ -63,20 +77,25 @@ async def quiz_question(callback: types.CallbackQuery, state: FSMContext) -> Non
     usr_answer: str = callback.data
     await state.update_data(question_num=res['question_num'] + 1)
 
-    await callback.message.answer(f'Вопрос: {res["question"]}\n'                                        # TEST
-                         f'Верный ответ: {children_actions[res["question"]]}\n'                         # TEST
-                         f'Ответ пользователя: {usr_answer}')                                           # TEST
+    # await callback.message.answer(f'Вопрос: {res["question"]}\n'                                        # TEST
+    #                      f'Верный ответ: {children_actions[res["question"]]}\n'                         # TEST
+    #                      f'Ответ пользователя: {usr_answer}')                                           # TEST
 
     if children_actions[res['question']] == 'coal':
         if usr_answer.lower() == 'gift':
-            await state.update_data(user_rating=res['user_rating'] + 1)                                  # TEST
-            await callback.message.answer(f'Ты добряк')                                                  # TEST
+            await state.update_data(user_rating=res['user_rating'] + 1)
+            await callback.message.answer(f'За такой поступок ребёнок всё же не заслуживает подарок')
+        elif usr_answer.lower() == 'coal':
+            await callback.message.answer(f'Молодец! Правильный ответ.')
+
 
     elif children_actions[res['question']] == 'gift':
         if usr_answer.lower() == 'coal':
             await state.update_data(user_rating=res['user_rating'] - 1)
-            await callback.message.answer(f'Ты злодей')                                                     # TEST
-    await callback.message.answer(f'Рейтинг: {res["user_rating"]}\tВопрос № {res["question_num"]}')         # TEST
+            await callback.message.answer(f'Эта шалость не особо плохая, так что ребенку можно было подарить подарок')
+    # await callback.message.answer(f'Рейтинг: {res["user_rating"]}\tВопрос № {res["question_num"]}')         # TEST
+        elif usr_answer.lower() == 'gift':
+            await callback.message.answer(f'Молодец! Правильный ответ.')
 
     if res['question_num'] <= 4:
         await callback.message.answer('Записал... Следующий вопрос?', reply_markup=yes_or_cancel_inline)
@@ -104,7 +123,7 @@ async def quiz_question_error(message: Message, state: FSMContext) -> None:
 async def results_of_quiz(callback: types.CallbackQuery, state: FSMContext) -> None:
     res: dict = await state.get_data()
     rating = res['user_rating']
-    await callback.message.answer(f'Хорошо!\nРейтинг: {rating}')
+    # await callback.message.answer(f'Хорошо!\nРейтинг: {rating}')                                # TEST
     kindness = 'вредный' if rating <= -2 else 'справедливый' if -1 <= rating <= 1 else 'добрый'
     kind_reply = 'Детям сложно получмть от тебя подарки' if rating <= -2 \
         else 'Ты правильно выбираешь вознаграждения для детей - они будут стараться вести себя хорошо!' if -1 <= rating <= 1\
