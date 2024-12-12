@@ -6,7 +6,7 @@ from aiogram.types import CallbackQuery, Message
 from database.engine import set_future_message, get_future_message, user_registration
 from loader import user_router
 from states.user_states import QuizStates
-from keyboards.user_inline_keyboards import set_or_show_future_message
+from keyboards.user_inline_keyboards import set_or_show_future_message, initial_keyboard_inline
 
 
 @user_router.callback_query(StateFilter(None), F.data == 'future')
@@ -25,9 +25,9 @@ async def change_future_message(callback: CallbackQuery, state: FSMContext):
 
 @user_router.message(QuizStates.setting_future_message, F.text)
 async def setting_future_msg(message: types.Message, state: FSMContext):
-    await message.answer(f'Распознано: {message.text}')
+    await message.answer(f'Записал', reply_markup=initial_keyboard_inline)
     await set_future_message(message.from_user, new_message=message.text)
-    await state.clear()                                             #TEST
+    await state.clear()
 
 
 @user_router.callback_query(StateFilter(QuizStates.go_to_setting_future_message), F.data == 'show_future_message')
