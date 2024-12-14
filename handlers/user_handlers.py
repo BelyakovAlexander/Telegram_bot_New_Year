@@ -43,16 +43,3 @@ async def bot_help(message: types.Message, state: FSMContext) -> None:
     text = [f"/{command} - {descr}" for command, descr in DEFAULT_COMMANDS]
     await message.answer("\n".join(text))
     await state.clear()
-
-
-# @user_router.message(F.text.lower() == 'menu')
-# @user_router.message(Command('menu'))
-# async def bot_help(message: types.Message, state: FSMContext) -> None:
-#     """Handler that activates when user's message contains 'menu' OR after command '/menu'"""
-#
-#     await user_registration(message.from_user)                      # Just in case, check if user has registered
-#     await message.answer('Please choose any option:',
-#                          reply_markup=initial_kbd)
-#     await state.clear()
-
-

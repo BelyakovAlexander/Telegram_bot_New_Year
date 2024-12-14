@@ -4,8 +4,7 @@ from aiogram.fsm.state import StatesGroup, State
 class RequestInfo(StatesGroup):
     """States for user info survey"""
     name = State()
-    # surname = State()
-    # age = State()
+
 
 
 class QuizStates(StatesGroup):
