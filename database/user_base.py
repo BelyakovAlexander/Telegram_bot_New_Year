@@ -19,24 +19,3 @@ class User(Base):
     last_visit: Mapped[DateTime] = mapped_column(DateTime, server_default=func.now(), onupdate=datetime.datetime.utcnow())
     message_to_future: Mapped[str] = mapped_column(String(200), server_default=None, nullable=True)
 
-
-# class RequestsHistory(Base):
-#     __tablename__ = 'requests_history'
-#
-#     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-#     url: Mapped[str] = mapped_column(String(300))
-#     query_text: Mapped[str] = mapped_column(String(30))
-#     user_tg_id: Mapped[int] = mapped_column(ForeignKey('users.telegram_id'))
-#     # user_name: Mapped[str] = mapped_column(ForeignKey('users.fullname'))
-#     request_time: Mapped[DateTime] = mapped_column(DateTime, server_default=func.now())
-
-# class Movie(Base):
-#     __tablename__ = 'movies'
-#
-#     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-#     rating: Mapped[str] = mapped_column(String(10)) # string (not float) for our convenience
-#     name: Mapped[str] = mapped_column(String(90), nullable=False)
-#     description: Mapped[str] = mapped_column(String(250))
-#     genre: Mapped[str] = mapped_column(String(40))
-#     country: Mapped[str] = mapped_column(String(40))
-#     year: Mapped[int] = mapped_column(Integer)
