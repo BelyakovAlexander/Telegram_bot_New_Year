@@ -5,6 +5,8 @@ from aiogram.enums import ParseMode
 from config_data import config
 
 # create dispatcher instance for main requests filtering
+from middlewares.message_control import MessageController
+
 dp = Dispatcher()
 
 # create routers instances
@@ -21,4 +23,8 @@ dp.include_router(user_router)
 
 # this router has to be connected last!
 dp.include_router(common_router)
+
+# register middleware in dispatcher (in this case - for delay before each message to avoid DDoS)
+dp.message.middleware.register(MessageController())
+dp.callback_query.middleware.register(MessageController())
 

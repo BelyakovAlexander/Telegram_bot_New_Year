@@ -8,6 +8,7 @@ else:
     load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+DELAY = 1.5
 
 # Commands list issued after "/help" command (see user_handlers)
 DEFAULT_COMMANDS = (
