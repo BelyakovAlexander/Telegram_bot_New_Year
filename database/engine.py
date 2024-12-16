@@ -23,6 +23,14 @@ async def drop_db():
         await conn.commit()             # if 2 lines above was 'engine.begin()', this line shouldn't be created, but I created it for better traceability
 
 
+async def get_all_users() -> list[User]:
+    """Function to get all users table"""
+    async with session_maker() as session:
+        users = await session.execute(select(User))
+        result = users.scalars().all()
+        return result
+
+
 async def user_registration(from_user) -> None:
     """Function for adding user in database after /start command"""
     async with session_maker() as session:
