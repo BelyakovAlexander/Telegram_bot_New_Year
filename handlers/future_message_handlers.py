@@ -1,7 +1,7 @@
 from aiogram import types, F
 from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import CallbackQuery
 
 from database.engine import set_future_message, get_future_message, user_registration
 from loader import user_router
@@ -34,7 +34,7 @@ async def setting_future_msg(message: types.Message, state: FSMContext):
 async def show_user_future_message(callback: CallbackQuery, state: FSMContext):
     mssg = await get_future_message(user_tg_id=callback.from_user.id)
     if mssg:
-        await callback.message.answer(f'Твоё сообщение в будущее: <b>{mssg}</b>')
+        await callback.message.answer(f'Твоё сообщение в будущее: \n <b>{mssg}</b>')
     else:
         await callback.message.answer(f'Ты пока не написал себе сообщение в будущее.')
     await state.clear()
