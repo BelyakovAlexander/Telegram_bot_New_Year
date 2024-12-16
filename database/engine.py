@@ -35,29 +35,6 @@ async def user_registration(from_user) -> None:
             ))
             await session.commit()
 
-
-# async def save_request(user_tg_id: int, query_url: str, text: str) -> None:
-#     """Save user's request to database.
-#     Autocheck if requests list increase 10 lines. In this case the latest requests to be deleted"""
-#     async with session_maker() as session:
-#         stmnt = select(RequestsHistory.request_time, RequestsHistory.query_text).\
-#                 where(RequestsHistory.user_tg_id == user_tg_id)
-#         result = await session.execute(stmnt)
-#         query_list = result.all()
-#
-#         # Deleting all latest requests in case it's quantity bigger than 10
-#         while len(query_list) >= 10:
-#             latest_query_stmnt = delete(RequestsHistory).\
-#                                 where(RequestsHistory.query_text == query_list[0][1])
-#             await session.execute(latest_query_stmnt)
-#             await session.commit()
-#             result = await session.execute(stmnt)
-#             query_list = result.all()
-#
-#         session.add(RequestsHistory(user_tg_id=user_tg_id, url=query_url, query_text = text))
-#         await session.commit()
-
-
 async def set_future_message(from_user, new_message) -> None:
     """Function for changing of 'future_message' column in 'users' table in DB for current user"""
     async with session_maker() as session:
@@ -80,11 +57,3 @@ async def get_future_message(user_tg_id) -> Optional[str]:
         else:
             return None
 
-# async def get_history(from_user):
-#     """Function that returns user's history"""
-#     async with session_maker() as session:
-#         stmnt = select(RequestsHistory.query_text, RequestsHistory.request_time, RequestsHistory.url).\
-#                 where(RequestsHistory.user_tg_id == from_user.id)
-#         result = await session.execute(stmnt)
-#         history = result.all()
-#         return history
