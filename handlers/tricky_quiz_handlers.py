@@ -119,7 +119,7 @@ async def results_of_quiz(callback: types.CallbackQuery, state: FSMContext) -> N
     res: dict = await state.get_data()
     rating = res['user_rating']
     kindness = 'вредный' if rating <= -2 else 'справедливый' if -1 <= rating <= 1 else 'добрый'
-    kind_reply = 'Детям сложно получмть от тебя подарки' if rating <= -2 \
+    kind_reply = 'Детям сложно получить от тебя подарки' if rating <= -2 \
         else 'Ты правильно выбираешь вознаграждения для детей - они будут стараться вести себя хорошо!' if -1 <= rating <= 1\
         else 'Ты очень любишь детей, и прощаешь им любые шалости!'
     await callback.message.answer(f'Ты {kindness} Дед Мороз! {kind_reply}', reply_markup=initial_keyboard_inline)

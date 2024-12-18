@@ -48,7 +48,7 @@ async def main():
                 task_list.append(save_send_message(bot, user))
         await asyncio.gather(*task_list)
 
-    execution_time = datetime.datetime(year=2024, month=12, day=16, hour=23, minute=38)
+    execution_time = datetime.datetime(year=2025, month=12, day=30, hour=13, minute=40)
     scheduler = AsyncIOScheduler(timezone='Europe/Moscow')
     # scheduler.add_job(regularity_work, trigger = 'interval', seconds = 3600, args=(bot,))
     # scheduler.add_job(regularity_work, trigger='cron', hour=12, minute=0)

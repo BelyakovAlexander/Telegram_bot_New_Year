@@ -4,7 +4,7 @@ from sqlalchemy import select, update, delete
 from typing import Optional
 from .user_base import Base, User
 
-engine = create_async_engine(os.getenv('USERS_DB'), echo=True)
+engine = create_async_engine(os.getenv('USERS_DB'), echo=False)
 
 session_maker = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 

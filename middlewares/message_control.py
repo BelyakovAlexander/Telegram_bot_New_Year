@@ -13,5 +13,5 @@ class MessageController(BaseMiddleware):
                        event: TelegramObject,
                        data: Dict[str, Any]):
         await asyncio.sleep(float(config_data.config.DELAY))
-        print('Awaiting for some seconds...')
+        # print('Awaiting for some seconds...')
         return await handler(event, data)

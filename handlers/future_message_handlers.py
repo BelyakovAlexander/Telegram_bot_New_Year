@@ -12,7 +12,10 @@ from keyboards.user_inline_keyboards import set_or_show_future_message, initial_
 @user_router.callback_query(StateFilter(None), F.data == 'future')
 async def choose_future_mssg_option(callback: CallbackQuery, state: FSMContext):
     await user_registration(callback.from_user)                                         # Just for sure - second registration attempt
-    await callback.message.answer('Задать новое сообщение или посмотреть уже написанное ранее?',
+    await callback.message.answer('Ты можешь написать сообщение с пожеланиями самому себе в будущем, \n'
+                                  'а я приберегу его и отправлю тебе в конце следующего года.\n'
+                                  'Очень любопытно, всё ли сбудется!\n'
+                                  'Задать новое сообщение или посмотреть уже написанное ранее?',
                                   reply_markup=set_or_show_future_message)
     await state.set_state(QuizStates.go_to_setting_future_message)
 
